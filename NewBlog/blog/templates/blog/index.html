@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load pagination %}
+
+{% block title %}{{ title }} : : {{ block.super }}{% endblock %}
+
+{% block cont %}
+    <section class="bg-text-area">
+
+    {% if page_obj.number == 1 %}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="bg-text">
+                        <h3>Classic BLOG Design</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                            voluptate velit esse cillum dolore eu fugiat nulla </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    </section>
+    <section class="blog-post-area">
+        <div class="container">
+            <div class="row">
+{#                <div class="blog-post-area-style">#}
+
+                    {% for post in posts %}
+
+                        {% if forloop.first %}
+
+                            <div class="col-md-12">
+                                <div class="single-post-big">
+                                    <div class="big-image">
+
+                                        {% if post.photo %}
+
+                                            <img src="{{ post.photo.url }}" alt="photo - {{ post.title }}">
+
+                                        {% else %}
+
+                                            <img src="{% static 'img/post-image1.jpg' %}" alt="photo - {{ post.title }}">
+
+                                        {% endif %}
+
+                                    </div>
+                                    <div class="big-text">
+                                        <h3><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
+
+                                        {% autoescape off %}
+
+                                            {{ post.content|truncatewords:50 }}
+
+                                        {% endautoescape %}
+
+                                        <h4><span class="date">{{ post.created_at|date:'d.m.Y' }}</span><span
+                                                class="author">Posted By: <span
+                                                class="author-name">{{ post.author }}</span></span>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="col-md-3">
+                                <div class="single-post">
+
+                                    {% if post.photo %}
+
+                                        <img src="{{ post.photo.url }}" alt="photo - {{ post.title }}">
+
+                                    {% else %}
+
+                                        <img src="{% static 'img/post-image4.jpg' %}" alt="photo - {{ post.title }}">
+
+                                    {% endif %}
+
+                                    <h3><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
+                                    <h4><span>Posted By: <span class="author-name">{{ post.author }}</span></span>
+                                    </h4>
+
+                                    {% autoescape off %}
+
+                                        {{ post.content|truncatewords:14 }}
+
+                                    {% endautoescape %}
+
+                                    <h4><span>{{ post.created_at|date:'d.m.Y' }}</span></h4>
+                                </div>
+                            </div>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+{#                </div>#}
+            </div>
+        </div>
+
+        {% show_pagination page_obj %}
+
+    </section>
+{% endblock %}

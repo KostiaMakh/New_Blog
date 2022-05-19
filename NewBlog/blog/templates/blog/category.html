@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load pagination %}
+
+{% block title %}{{ title }} : : {{ block.super }}{% endblock %}
+
+{% block cont %}
+    <section class="blog-post-area">
+        <div class="container">
+            <div class="row">
+                <div class="blog-post-area-style">
+                    <h1>{{ title }}</h1>
+                    {% for post in posts %}
+                        <div class="col-md-3">
+                            <div class="single-post" style="margin: 40px 0">
+                                {% if post.photo %}
+                                    <img src="{{ post.photo.url }}" alt="photo - {{ post.title }}">
+                                {% else %}
+                                    <img src="{% static 'img/post-image4.jpg' %}" alt="photo - {{ post.title }}">
+                                {% endif %}
+
+                                <h3><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
+                                <h4><span>Posted By: <span class="author-name">{{ post.author }}</span></span>
+                                </h4>
+                                {% autoescape off %}
+                                    {{ post.content|truncatewords:14 }}
+                                {% endautoescape %}
+                                <h4><span>{{ post.created_at|date:'d.m.Y' }}</span></h4>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        {% show_pagination page_obj %}
+
+    </section>
+{% endblock %}

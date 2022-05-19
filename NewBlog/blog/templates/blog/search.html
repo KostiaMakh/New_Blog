@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load pagination %}
+
+{% block title %}Результаты поиска. стр {{ page_obj.number }} : : {{ block.super }}{% endblock %}
+
+{% block cont %}
+    <section class="blog-post-area">
+        <div class="container">
+            <div class="row" style="padding: 20px">
+                {% for post in posts %}
+                    <div class="col-md-12 search-post row">
+                        <div class="col-md-4">
+
+                            {% if post.photo %}
+
+                                <img src="{{ post.photo.url }}" alt="photo - {{ post.title }}" width="100%">
+
+                            {% else %}
+
+                                <img src="{% static 'img/post-image4.jpg' %}" alt="photo - {{ post.title }}">
+
+                            {% endif %}
+
+                        </div>
+                        <div class="col-md-8">
+
+                            <h3><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
+                            <h4><span>Posted By: <span class="author-name">{{ post.author }}</span></span></h4>
+
+                            {% autoescape off %}
+
+                                {{ post.content|truncatewords:30 }}
+
+                            {% endautoescape %}
+
+                            <h4><span>{{ post.created_at|date:'d.m.Y' }}</span></h4>
+
+                        </div>
+                    </div>
+
+                {% empty %}
+                    <div class="col-md-12 search-post">
+                        <h3 style="font-size: 30px; color: dimgrey">Oops! По вашему запросу ничего не найденно!</h3>
+                    </div>
+                {% endfor %}
+
+                {#                </div>#}
+            </div>
+        </div>
+
+        {% show_pagination page_obj %}
+
+    </section>
+{% endblock %}

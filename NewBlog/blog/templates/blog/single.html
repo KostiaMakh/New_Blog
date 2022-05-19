@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load sidebar %}
+
+{% block title %}{{ post.title }} : : {{ block.super }}{% endblock %}
+
+{% block cont %}
+    <section class="single-blog-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="border-top">
+                        <div class="col-md-8">
+                            <div class="blog-area">
+                                <div class="blog-area-part">
+                                    <h1 style="padding-bottom: 16px!important;">{{ post.title }}</h1>
+                                    <div class="meta-data-post">
+                                        <p>Категория: <a
+                                                href="{{ post.category.get_absolute_url }}">{{ post.category }}</a></p>
+                                        <p>Дата публикции: {{ post.created_at|date:'d.m.Y' }}</p>
+                                        <p>Автор поста: <b>{{ post.author }}</b></p>
+                                        <p>Количество просмотров: {{ post.views }}</p>
+                                    </div>
+                                    <div class="for-style">
+                                        <img src="{{ post.photo.url }}" alt="фото - {{ post.title }}">
+                                        {{ post.content|safe }}
+                                    </div>
+
+                                    {% if post.tags.exists %}
+                                        <p>Tags:
+                                            {% for tag in post.tags.all %}
+                                                <a href="{{ tag.get_absolute_url }}"> #{{ tag.title }}</a>
+                                            {% endfor %}
+                                        </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+
+                            {% get_search_block %}
+
+                            {% get_popular_posts %}
+
+                            {% get_tags_cloud %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
